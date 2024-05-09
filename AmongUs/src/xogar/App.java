@@ -2,21 +2,22 @@ package xogar;
 
 import java.util.Scanner;
 import menu.Menu;
+import menu.SingletonScanner;
 
 class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = SingletonScanner.getInstance();
         Menu menu = new Menu("Menu Principal");
 
         while (true) {
             menu.display();
-            System.out.println("Por favor, elige una opción:");
-            int userInput = scanner.nextInt();
+            System.out.println("Por favor, elixa unha opción:");
+            int entradaUsu = sc.nextInt();
 
-            if (userInput >= 0 && userInput < menu.getMenuSize()) {
-                menu.handleUserInput(userInput);
+            if (entradaUsu >= 0 && entradaUsu < menu.getMenuSize()) {
+                menu.manexarEntradaUsuario(entradaUsu);
             } else {
-                System.out.println("Opción no válida. Por favor, intenta de nuevo.");
+                System.out.println("Opción non válida. Por favor, intenta de novo.");
             }
         }
     }

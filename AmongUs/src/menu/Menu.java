@@ -54,37 +54,37 @@ public class Menu {
         return mainMenu.size();
     }
 
-    public void handleUserInput(int userInput) {
-        MenuComposite chosenOption = mainMenu.get(userInput);
-        if (chosenOption instanceof MenuHoja) {
-            switch (chosenOption.getName()) {
+    public void manexarEntradaUsuario(int entradaUsu) {
+        MenuComposite opcion = mainMenu.get(entradaUsu);
+        if (opcion instanceof MenuHoja) {
+            switch (opcion.getName()) {
                 case "Xogar":
                     // Aquí puedes llamar al método para iniciar el juego
                     break;
                 case "Sair":
-                    System.out.println("Saliendo...");
+                    System.out.println("Saindo...");
                     System.exit(0);
                     break;
                 default:
                     System.out.println("Opción no válida. Por favor, intenta de nuevo.");
             }
-        } else if (chosenOption instanceof MenuNodo) {
-            handleSubMenuInput((MenuNodo) chosenOption, "\t");
+        } else if (opcion instanceof MenuNodo) {
+            manexarSubMenus((MenuNodo) opcion, "\t");
         }
     }
 
-    private void handleSubMenuInput(MenuNodo menuNod, String prefix) {
+    private void manexarSubMenus(MenuNodo menuNod, String prefix) {
         while (true) {
             for (int i = 0; i < menuNod.getSubMenu().size(); i++) {
                 System.out.println(prefix + i + ". " + menuNod.getSubMenu().get(i).getName());
             }
-            System.out.println(prefix + "Por favor, elixe unha opción:");
-            int userInput = scanner.nextInt();
+            System.out.println(prefix + "Por favor, elixa unha opción:");
+            int entradaUsu = scanner.nextInt();
 
-            if (userInput >= 0 && userInput < menuNod.getSubMenu().size()) {
-                MenuComposite chosenOption = menuNod.getSubMenu().get(userInput);
-                if (chosenOption instanceof MenuHoja) {
-                    switch (chosenOption.getName()) {
+            if (entradaUsu >= 0 && entradaUsu < menuNod.getSubMenu().size()) {
+                MenuComposite opcion = menuNod.getSubMenu().get(entradaUsu);
+                if (opcion instanceof MenuHoja) {
+                    switch (opcion.getName()) {
                         case "Engadir tarefa":
                             xogo.engadirTarefa();
                             break;
@@ -110,11 +110,11 @@ public class Menu {
                             break;
                         // Agrega aquí los casos para las otras opciones de submenú
                     }
-                } else if (chosenOption instanceof MenuComposite) {
-                    handleSubMenuInput((MenuNodo) chosenOption, prefix + "\t");
+                } else if (opcion instanceof MenuComposite) {
+                    manexarSubMenus((MenuNodo) opcion, prefix + "\t");
                 }
             } else {
-                System.out.println(prefix + "Opción no válida. Por favor, intenta de nuevo.");
+                System.out.println(prefix + "Opción non válida. Por favor, intenta de novo.");
             }
         }
     }
