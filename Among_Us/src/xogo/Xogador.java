@@ -2,15 +2,17 @@ package xogo;
 
 import java.util.*;
 
-public class Xogador implements Observable {
+public class Xogador  implements Observable, Comparable<Xogador>{
 
     private String alias;
     private boolean vivo;
     private Queue<Tarefa> tarefas;
     private List<Observer> observers = new ArrayList<>();
 
+
     public Xogador(String alias) {
         this.alias = alias;
+        this.vivo=true;
         List<Tarefa> tarefasAleatorias = new LinkedList<>(Tarefa.getTarefas());
         Collections.shuffle(tarefasAleatorias);
         this.tarefas = new LinkedList<>();
@@ -19,14 +21,6 @@ public class Xogador implements Observable {
         }
     }
 
-
-
-    public String getAlias() {
-        return alias;
-    }
-    public void setVivo(boolean vivo) {
-        this.vivo = vivo;
-    }
     @Override
     public void rexistrarObserver(Observer o) {
         observers.add(o);
@@ -43,10 +37,16 @@ public class Xogador implements Observable {
             o.update(this);
         }
     }
-
     public void moverParaHabitacion(String habitacion) {
-        // ...
+
         notificarObservers();
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+    public void setVivo(boolean vivo) {
+        this.vivo = vivo;
     }
 
     public Queue<Tarefa> getTarefas() {
@@ -55,5 +55,10 @@ public class Xogador implements Observable {
 
     public boolean isVivo() {
         return vivo;
+    }
+
+    @Override
+    public int compareTo(Xogador o) {
+        return this.alias.compareTo(o.alias);
     }
 }
