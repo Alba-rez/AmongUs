@@ -3,12 +3,15 @@ package menu;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 import xogo.Xogo;
 
 public class Menu {
     private List<MenuComposite> mainMenu;
     private Scanner scanner;
     private Xogo xogo;
+
+
 
     public Menu(String name) {
         this.mainMenu = new ArrayList<>();
@@ -59,7 +62,7 @@ public class Menu {
         if (opcion instanceof MenuHoja) {
             switch (opcion.getName()) {
                 case "Xogar":
-                    // Aquí puedes llamar al método para iniciar el juego
+                    xogo.xogarRolda();
                     break;
                 case "Sair":
                     System.out.println("Saindo...");
@@ -71,7 +74,9 @@ public class Menu {
         } else if (opcion instanceof MenuNodo) {
             manexarSubMenus((MenuNodo) opcion, "\t");
         }
+
     }
+
 
     private void manexarSubMenus(MenuNodo menuNod, String prefix) {
         while (true) {
@@ -95,7 +100,7 @@ public class Menu {
                             xogo.verTarefas();
                             break;
                         case "Sair":
-                            return; // Vuelve al menú principal
+                            return; // Volve ó menú principal
                         case "Engadir xogador":
                             xogo.engadirXogador();
                             break;
@@ -108,7 +113,7 @@ public class Menu {
                         case "Configurar tempo máximo de resposta":
                             xogo.configurarTempo();
                             break;
-                        // Agrega aquí los casos para las otras opciones de submenú
+
                     }
                 } else if (opcion instanceof MenuComposite) {
                     manexarSubMenus((MenuNodo) opcion, prefix + "\t");
@@ -116,6 +121,14 @@ public class Menu {
             } else {
                 System.out.println(prefix + "Opción non válida. Por favor, intenta de novo.");
             }
+        }
+    }
+
+    public String getMenuOptionName(int index) {
+        if (index >= 0 && index < mainMenu.size()) {
+            return mainMenu.get(index).getName();
+        } else {
+            return null;
         }
     }
 }

@@ -30,7 +30,7 @@ public class Tarefa {
     }
 
     public void realizar() {
-        System.out.println("Realizando a tarefa: " + nome + " na habitación : " + habitacion);
+        System.out.println("A tarefa " + getNome() + " completouse.");
     }
 
     public String getNome() {
