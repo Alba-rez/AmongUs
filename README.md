@@ -31,8 +31,8 @@ Neste caso o patrón asegura que so haxa unha instancia de java.util.Scanner. Es
 >
 > ### IMPLEMENTACIÓND DE MÉTODOS STANDARD
 >       
-> Implementación de métodos standard como compareTo na clase Xogador, e equals e hash na clase Xogador e Tarefa,no caso de ter que comparar os seus obxectos para unha ordenación. Na clase Xogador úsase o método compareTo para ordear os alias en orden alfabético ascendente, tomando como referencia un String.
-Por outro lado a sobreescritura do método equals e hash realizouse nestas 2 clases para o caso de ter que comprar dous obxectos entre sí
+> Implementación de métodos standard como compareTo na clase Xogador e Tarefa, así como "equals" e "hash", para o caso de ter que comparar os seus obxectos para unha ordenación. Na clase Xogador úsase o método compareTo para ordear os alias en orden alfabético ascendente, tomando como referencia esos mesmos alias. Creo que nesta clase non era necesario a sobreescritura de "equals" e hash, pero é unha boa práctica. O mesmo para a clase Tarefa, que se pretende ordear polo nome da tarefa, que neste caso é letra inicial que compón o String.
+>
 >
 >  ### ENCAPSULAMENTO DE DATOS
 >
@@ -44,7 +44,7 @@ Por outro lado a sobreescritura do método equals e hash realizouse nestas 2 cla
 > 
 >  ### USO DE ITERADORES
 >
-> O programa implementa o uso de un iterador na clase Xogo e no método xogarRolda(), para evitar unha excepción de concurrencia, que sucede cando se recorre unha lista e se modifica ao mesmo tempo
+> O programa implementa o uso de un iterador na clase Xogo , dentro do método xogarRolda(), para evitar unha excepción de concurrencia, que sucede cando se recorre unha lista e se modifica ao mesmo tempo
 >
 >  ### OBSERVACIÓNS
 >
