@@ -29,7 +29,7 @@ Neste caso o patrón asegura que so haxa unha instancia de java.util.Scanner. Es
 >
 > O programa utiliza o patrón de diseño "Composite" para presentar xerarquías de obxectos. A través de índices poderase acceder a submenús dentro do menú principal, así como submenús dos submenús, nos que se poderá visiualizar a información que conteñan ou especificar novos valores para os obxectos do programa
 >
-> ### IMPLEMENTACIÓND DE MÉTODOS STANDARD
+> ### IMPLEMENTACIÓN DE MÉTODOS STANDARD
 >       
 > Implementación de métodos standard como compareTo na clase Xogador e Tarefa, así como "equals" e "hash", para o caso de ter que comparar os seus obxectos para unha ordenación. Na clase Xogador úsase o método compareTo para ordear os alias en orden alfabético ascendente, tomando como referencia esos mesmos alias. Creo que nesta clase non era necesario a sobreescritura de "equals" e hash, pero é unha boa práctica. O mesmo para a clase Tarefa, que se pretende ordear polo nome da tarefa, que neste caso é letra inicial que compón o String.
 >
