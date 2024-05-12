@@ -18,6 +18,7 @@ class Main {
             int entradaUsu = sc.nextInt();
             sc.nextLine();
 
+
             if (entradaUsu >= 0 && entradaUsu < menu.getMenuSize()) {
                 ultimaOpcion = menu.getMenuOptionName(entradaUsu);
                 menu.manexarEntradaUsuario(entradaUsu);

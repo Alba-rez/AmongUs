@@ -5,7 +5,7 @@ import java.util.*;
 class Tarefa implements Comparable<Tarefa>{
 
     // Colección de tarefas, almacenadas nun Set para evitar duplicados
-    private static Set<Tarefa> tarefas = new LinkedHashSet<>();
+    private static Set<Tarefa> tarefas = new TreeSet<>();
 
     private String nome;
 
