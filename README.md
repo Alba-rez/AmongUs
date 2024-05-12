@@ -49,7 +49,7 @@ Neste caso o patrón asegura que so haxa unha instancia de java.util.Scanner. Es
 >  ### OBSERVACIÓNS
 >
 > Non teño de todo claro se o programa está funcionando correctamente porque ainda non entendo moi ben a lóxica en si do xogo. O menú funciona desplegando os submenús conforme se van indicando os índice de consulta. No apartado Tarefa, pódese ver as tarefas que están feitas para o xogo, e no caso de engadir tarefas e borralas, a lóxica de esos métodos tamén está implementada. No apartado Xogador, xa non se ven os xogadores no índice correspondente, porque éstos estanse a crear durante a execución do programa. Doulle un alias á tódolos xogadores da lista de xogadores e despois os sustitúo por impostores ou estudantes.
-Para ir hacia atrás no menú uso a opción "Sair", e antes de xogar hai que especificar o tempo máximo de resposta no apartado de configuración.
+Para ir hacia atrás no menú uso a opción "Sair", e na opción de configuración pódese establer un novo tempo de resposta máxima. Por defecto está establecido a 10000 milisegundos.
 > A clase Xogo encapsula a lóxica principal do xogo, e  a relizacións de accións durante as roldas.
 >
 > ### Conclusión: 
