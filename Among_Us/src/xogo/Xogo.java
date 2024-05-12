@@ -9,7 +9,7 @@ public class Xogo {
 
     //private List<Tarefa> tarefasIniciales;
     private Set <Xogador> xogadores;
-    private int tempoMaximo;
+    private int tempoMaximo=10000;
     private List<String> habitacions;
     private boolean xogoEnMarcha = false;
     private Impostor impostor;
@@ -105,10 +105,8 @@ public class Xogo {
     }
 
     public void finalizarPartida() {
-
         int numImpostores = 0;
         int numEstudantes = 0;
-
 
         for (Xogador xogador : xogadores) {
             if (xogador instanceof Impostor) {
@@ -117,34 +115,31 @@ public class Xogo {
                 numEstudantes++;
             }
         }
+
         if (numEstudantes <= numImpostores) {
-            System.out.println("A partida terminou.");
+            xogoEnMarcha = false;
+        }
 
-
-            for (Xogador xogador : xogadores) {
-                xogador.setVivo(true);
-                if (xogador instanceof Impostor) {
-                    ((Impostor) xogador).eliminados.clear();
-                }
+        if (xogoEnMarcha) {
+            System.out.println("Rematou a partida. \n¿Queres voltar a xogar? (s/n)");
+            String resposta = sc.nextLine();
+            if (resposta.equalsIgnoreCase("s")) {
+                xogoEnMarcha=true;
+                xogarRolda();
+            } else {
+                //return;
+                System.exit(0);
             }
-
-
-
-
         }
 
-        xogoEnMarcha=false;
-        System.out.println("Rematou a partida. \n¿Queres voltar a xogar? (s/n)");
-        String respuesta = sc.nextLine();
-        if(respuesta.equalsIgnoreCase("s")){
-            xogarRolda();
-        }else {
-            System.exit(0);
+        for (Xogador xogador : xogadores) {
+            xogador.setVivo(true);
+            if (xogador instanceof Impostor) {
+                ((Impostor) xogador).eliminados.clear();
+            }
         }
-
-
-
     }
+
     public boolean finPartida(){
         int numImp=0;
         int numEstudantesVivos=0;
@@ -156,13 +151,13 @@ public class Xogo {
                 numEstudantesVivos++;
             }
         }
-        System.out.println("Número de impostores: " + numImp);
-        System.out.println("Número de estudiantes vivos: " + numEstudantesVivos);
+        /*System.out.println("Número de impostores: " + numImp);
+        System.out.println("Número de estudantes vivos: " + numEstudantesVivos);*/
         return numEstudantesVivos <= numImp;
     }
 
     public void xogarRolda() {
-        String resposta;
+        String resposta="";
         boolean tempoEsgotado=false;
         Set<String> aliasSet = new TreeSet<>();
 
@@ -171,21 +166,23 @@ public class Xogo {
                 String alias;
                 do {
                     alias = "@" + (char) ('a' + new Random().nextInt(26)) + (char) ('a' + new Random().nextInt(26)) + (char) ('a' + new Random().nextInt(26));
-
                 }while(!aliasSet.add(alias));
 
                 Xogador xogador = new Xogador(alias);
                 xogadores.add(xogador);
             }
         }
+        int ronda=0;
         do {
-
-            // xeramos os impostores, que non poderán ser máis ca 3 e menos ca 1
             int numImpostores = Math.max(1,(int) (Math.random() * xogadores.size() / 2));
             int numEstudantes = 5;
             iniciarPartida(numImpostores, numEstudantes);
-
-           System.out.println();
+            ronda++;
+            System.out.println();
+            System.out.println("----------------");
+            System.out.println("\tRonda "+ronda);
+            System.out.println("-----------------");
+            System.out.println();
             for (Xogador xogador : xogadores) {
                 String novaHabitacion = obtenerHabitacionAleatoria();
                 xogador.moverParaHabitacion(novaHabitacion);
@@ -197,6 +194,7 @@ public class Xogo {
                     }
                 }
             }
+
             int asesinatos=0;
             List<Xogador> xogadoresList = new ArrayList<>(xogadores);
 
@@ -216,50 +214,61 @@ public class Xogo {
                     }
                 }
             }
+            System.out.println();
             System.out.println("*************************************************");
             System.out.println("Houbo " + asesinatos + " asesinato(s) nesta ronda.");
             System.out.println("*************************************************");
+            System.out.println();
             if(finPartida()){
                 finalizarPartida();
-                return;
+                break;
             }
 
+            boolean respostaValida = false;
+            while (!respostaValida) {
+                System.out.println("¿Queres eliminar a un xogador? (s/n)");
+                long tempoInicial = System.currentTimeMillis();
+                resposta = sc.next();
+                sc.nextLine();
+                long tempoFinal = System.currentTimeMillis();
 
-            System.out.println("¿Queres eliminar a un xogador? (s/n)");
-            long tempoInicial = System.currentTimeMillis();
-            resposta = sc.next();
-            sc.nextLine();
-            long tempoFinal = System.currentTimeMillis();
-
-            if ((tempoFinal - tempoInicial) > getTempoMaximo()) {
-                System.out.println("Tempo esgotado.");
-                tempoEsgotado=true;
-                xogoEnMarcha=true;
-                xogarRolda();
-
-
-            } else if (resposta.equalsIgnoreCase("s")) {
-                borrarXogador();
-
-            }else if(!resposta.equalsIgnoreCase("n")){
-                System.out.println("Resposta non válida. Por favor, introduce 's' ou 'n'.");
-
+                if ((tempoFinal - tempoInicial) > getTempoMaximo()) {
+                    System.out.println("Tempo esgotado.");
+                    tempoEsgotado=true;
+                    xogoEnMarcha=true;
+                    xogarRolda();
+                    break;
+                } else if (resposta.equalsIgnoreCase("s")) {
+                    borrarXogador();
+                    respostaValida = true;
+                } else if (resposta.equalsIgnoreCase("n")) {
+                    respostaValida = true;
+                } else {
+                    System.out.println("Resposta non válida. Por favor, introduce 's' ou 'n'.");
+                }
             }
 
             if (!xogoEnMarcha || resposta.equalsIgnoreCase("n")) {
-                System.out.println("¿Queres xogar outra rolda? (s/n)");
-                resposta = sc.nextLine();
-                xogoEnMarcha=true;
-                if (resposta.equalsIgnoreCase("n")) {
-                    System.exit(0);
+                respostaValida = false;
+                while (!respostaValida) {
+                    System.out.println("¿Queres xogar outra rolda? (s/n)");
+                    resposta = sc.next();
+                    sc.nextLine();
+
+                    if (resposta.equalsIgnoreCase("s")) {
+                        xogoEnMarcha = true;
+                        respostaValida = true;
+                    } else if (resposta.equalsIgnoreCase("n")) {
+                        System.exit(0);
+                    } else {
+                        System.out.println("Resposta non válida. Por favor, introduce 's' ou 'n'.");
+                    }
                 }
-
             }
-
-
         }while(resposta.equalsIgnoreCase("s") && xogoEnMarcha);
 
     }
+
     public void engadirTarefa() {
         String nome=sc.nextLine();
         String habitacion=sc.nextLine();
@@ -292,7 +301,7 @@ public class Xogo {
             Tarefa.getTarefas().remove(borraTarefa);
             System.out.println("Tarefa eliminada.");
         } else {
-            System.out.println("No se encontró la tarea con el nombre " + nomeTarefa + " en la habitación " + habitacion);
+            System.out.println("Non se encontrou a tarefa co nome " + nomeTarefa );
         }
         verTarefas();
 
@@ -340,7 +349,7 @@ public class Xogo {
         xogadores.remove(aliasXog);
         System.out.println("Xogador eliminado.");
         if(aliasXog instanceof Impostor){
-            System.out.println("Eliminaches a un Impostor!!");
+            System.out.println("Noraboa!\nEliminaches a un Impostor!!");
         } else {
             System.out.println("Eliminaches a un Estudante.");
             if(xogoEnMarcha){
