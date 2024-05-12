@@ -41,22 +41,25 @@ public class Menu {
         configuracion.add(new MenuHoja("Configurar tempo máximo de resposta"));
         configuracion.add(new MenuHoja("Sair"));
 
-        // Agregar opciones al menú principal
+        // Engadir opcións ao menú principal
         mainMenu.add(configuracion);
         mainMenu.add(xogar);
         mainMenu.add(sair);
     }
 
+    // Método para amosar o menú principal
     public void display() {
         for (int i = 0; i < mainMenu.size(); i++) {
             System.out.println(i + ". " + mainMenu.get(i).getName());
         }
     }
 
+    // Método para obter o tamaño do menú
     public int getMenuSize() {
         return mainMenu.size();
     }
 
+    // Método para xestionar a entrada do usuario
     public void manexarEntradaUsuario(int entradaUsu) {
         MenuComposite opcion = mainMenu.get(entradaUsu);
         if (opcion instanceof MenuHoja) {
@@ -78,6 +81,7 @@ public class Menu {
     }
 
 
+    // Método privado para xestionar os submenús
     private void manexarSubMenus(MenuNodo menuNod, String prefix) {
         while (true) {
             for (int i = 0; i < menuNod.getSubMenu().size(); i++) {
@@ -124,6 +128,7 @@ public class Menu {
         }
     }
 
+    // Método para obter o nome da opción do menú
     public String getMenuOptionName(int index) {
         if (index >= 0 && index < mainMenu.size()) {
             return mainMenu.get(index).getName();

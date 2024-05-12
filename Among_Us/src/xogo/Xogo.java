@@ -5,9 +5,11 @@ import menu.SingletonScanner;
 import java.util.*;
 
 public class Xogo {
+
+    // Obxecto de Scanner para a entrada do usuario
     Scanner sc = SingletonScanner.getInstance();
 
-    //private List<Tarefa> tarefasIniciales;
+
     private Set <Xogador> xogadores;
     private int tempoMaximo=10000;
     private List<String> habitacions;
@@ -17,21 +19,22 @@ public class Xogo {
 
 
     public Xogo() {
-        this.xogadores = new TreeSet<>();
-        this.habitacions = new LinkedList<>();
+        this.xogadores = new TreeSet<>();  // Inicialización do conxunto de xogadores
+        this.habitacions = new LinkedList<>(); // Inicialización da lista de habitacións
         this.habitacions.add("Aula Bodega");
         this.habitacions.add("Sala Profesorado");
         this.habitacions.add("Conserxería");
-        this.observables = new ArrayList<>();
+        this.observables = new ArrayList<>(); // Inicialización da lista de observables
     }
 
-
+    // Método para obter unha habitación aleatoria
     public String obtenerHabitacionAleatoria() {
         Random rand = new Random();
         int randomIndex = rand.nextInt(habitacions.size());
         return habitacions.get(randomIndex);
     }
 
+    // Método para iniciar unha partida
     public void iniciarPartida(int numeroImpostores, int numeroEstudantes) {
         Random rand = new Random();
         Set<Integer> impostoresIndices = new HashSet<>();
@@ -104,10 +107,12 @@ public class Xogo {
         }
     }
 
+    // Método para rematar unha partida
     public void finalizarPartida() {
         int numImpostores = 0;
         int numEstudantes = 0;
 
+        // Contadores para o número de impostores e estudantes
         for (Xogador xogador : xogadores) {
             if (xogador instanceof Impostor) {
                 numImpostores++;
@@ -116,10 +121,12 @@ public class Xogo {
             }
         }
 
+        // Se hai máis ou igual número de impostores que de estudantes vivos, a partida remata
         if (numEstudantes <= numImpostores) {
             xogoEnMarcha = false;
         }
 
+        // Se o xogo aínda está en marcha, ofrece a opción de xogar outra rolda
         if (xogoEnMarcha) {
             System.out.println("Rematou a partida. \n¿Queres voltar a xogar? (s/n)");
             String resposta = sc.nextLine();
@@ -128,10 +135,12 @@ public class Xogo {
                 xogarRolda();
             } else {
                 //return;
-                System.exit(0);
+                System.exit(0); // Se a resposta non é 's', sae do xogo
+
             }
         }
 
+        // Restaura o estado dos xogadores para a próxima partida
         for (Xogador xogador : xogadores) {
             xogador.setVivo(true);
             if (xogador instanceof Impostor) {
@@ -140,6 +149,7 @@ public class Xogo {
         }
     }
 
+    // Método para comprobar se a partida chegou ao fin
     public boolean finPartida(){
         int numImp=0;
         int numEstudantesVivos=0;
@@ -153,17 +163,22 @@ public class Xogo {
         }
         /*System.out.println("Número de impostores: " + numImp);
         System.out.println("Número de estudantes vivos: " + numEstudantesVivos);*/
-        return numEstudantesVivos <= numImp;
+
+        return numEstudantesVivos <= numImp; // Se retirna true a partida remata
     }
 
     public void xogarRolda() {
+
+        // Variables para controlar o estado do xogo
         String resposta="";
         boolean tempoEsgotado=false;
-        Set<String> aliasSet = new TreeSet<>();
+        Set<String> aliasSet = new TreeSet<>(); // Conxunto para gardar os alias xa asignados
 
+        // Se non hai xogadores, crea unha lista de xogadores con alias aleatorios
         if (xogadores.isEmpty()) {
             for (int i = 0; i < 7; i++) {
                 String alias;
+                // Xera un alias aleatorio ata que non se repita
                 do {
                     alias = "@" + (char) ('a' + new Random().nextInt(26)) + (char) ('a' + new Random().nextInt(26)) + (char) ('a' + new Random().nextInt(26));
                 }while(!aliasSet.add(alias));
@@ -174,8 +189,11 @@ public class Xogo {
         }
         int ronda=0;
         do {
+            // Número aleatorio de impostores e estudantes
             int numImpostores = Math.max(1,(int) (Math.random() * xogadores.size() / 2));
             int numEstudantes = 5;
+
+            // Inicia unha nova partida con impostores e estudantes
             iniciarPartida(numImpostores, numEstudantes);
             ronda++;
             System.out.println();
@@ -183,9 +201,13 @@ public class Xogo {
             System.out.println("\tRonda "+ronda);
             System.out.println("-----------------");
             System.out.println();
+
+            // Accións dos xogadores na rolda
             for (Xogador xogador : xogadores) {
                 String novaHabitacion = obtenerHabitacionAleatoria();
                 xogador.moverParaHabitacion(novaHabitacion);
+
+                // Se o xogador é un estudante, realiza unha tarefa na habitación
                 if (xogador instanceof Estudante) {
                     Queue<Tarefa> tarefas = obtenerTarefasAleatorias();
                     if (!tarefas.isEmpty()) {
@@ -195,6 +217,7 @@ public class Xogo {
                 }
             }
 
+            // Comprobación e execución de asasinatos por parte dos impostores
             int asesinatos=0;
             List<Xogador> xogadoresList = new ArrayList<>(xogadores);
 
@@ -214,16 +237,19 @@ public class Xogo {
                     }
                 }
             }
+            // Visualiza o resultado dos asasinatos nesta rolda
             System.out.println();
             System.out.println("*************************************************");
             System.out.println("Houbo " + asesinatos + " asesinato(s) nesta ronda.");
             System.out.println("*************************************************");
             System.out.println();
+
+            // Comproba se a partida debe rematar
             if(finPartida()){
                 finalizarPartida();
                 break;
             }
-
+            // Pregunta se se quere eliminar un xogador ou xogar outra rolda
             boolean respostaValida = false;
             while (!respostaValida) {
                 System.out.println("¿Queres eliminar a un xogador? (s/n)");
@@ -232,6 +258,7 @@ public class Xogo {
                 sc.nextLine();
                 long tempoFinal = System.currentTimeMillis();
 
+                // Comproba se o tempo de resposta esgotouse
                 if ((tempoFinal - tempoInicial) > getTempoMaximo()) {
                     System.out.println("Tempo esgotado.");
                     tempoEsgotado=true;
@@ -248,6 +275,7 @@ public class Xogo {
                 }
             }
 
+            // Se a resposta non é 's', pregunta se se quere xogar outra rolda
             if (!xogoEnMarcha || resposta.equalsIgnoreCase("n")) {
                 respostaValida = false;
                 while (!respostaValida) {
