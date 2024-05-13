@@ -29,7 +29,7 @@ public class Impostor extends Xogador implements Observer{
                     eliminados.add((Estudante) xogador);
                     asesinatos++;
                 }
-                // Visualiza o resultado dos asasinatos nesta rolda
+
 
 
             }
