@@ -45,13 +45,11 @@ public class Xogo {
         }
 
         // Garantizar mínimo un estudiante
-        if (numeroEstudantes <=3) {
-            numeroEstudantes = 4;
+        if (numeroEstudantes <1) {
+            numeroEstudantes = 1;
         }
-
-        if (numeroImpostores + numeroEstudantes > xogadores.size()) {
-            numeroImpostores = xogadores.size() -numeroEstudantes;
-
+        if (numeroImpostores >= numeroEstudantes) {
+            numeroEstudantes = numeroImpostores +1; // Asegura que sempre haxa polo menos un estudante máis que impostores
         }
 
         //  impostores
@@ -161,8 +159,8 @@ public class Xogo {
                 numEstudantesVivos++;
             }
         }
-        /*System.out.println("Número de impostores: " + numImp);
-        System.out.println("Número de estudantes vivos: " + numEstudantesVivos);*/
+        System.out.println("Número de impostores: " + numImp);
+        System.out.println("Número de estudantes vivos: " + numEstudantesVivos);
 
         return numEstudantesVivos <= numImp; // Se retirna true a partida remata
     }
