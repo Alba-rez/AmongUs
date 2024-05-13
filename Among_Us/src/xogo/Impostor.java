@@ -35,7 +35,7 @@ public class Impostor extends Xogador implements Observer{
             }
 
     }
-    // Método para obter a lista de estudantes eliminados polo impostor
+    // Método para obter a número de estudantes eliminados polo impostor
     public int getEliminados() {
         int numEliminados=0;
         for(int i=0;i<eliminados.size();i++){
