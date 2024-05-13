@@ -62,6 +62,7 @@ public class Xogo {
                     impostoresIndices.add(randomIndex);
                     Xogador xogador = xogadoresList.get(randomIndex);
                     impostor = new Impostor(xogador.getAlias());
+                    impostor.setVivo(xogador.isVivo());
                     xogadores.remove(xogador); // Elimina o xogador original
                     xogadores.add(impostor);
 
@@ -84,6 +85,7 @@ public class Xogo {
                 Queue<Tarefa> tarefas = obtenerTarefasAleatorias();
                 Estudante estudante = new Estudante(xogador.getAlias());
                 estudante.asignarTarefas(tarefas);
+                estudante.setVivo(true);
                 xogadores.remove(xogador); // Elimina o xogador original
                 xogadores.add(estudante);
                 observables.add(estudante);
@@ -159,8 +161,8 @@ public class Xogo {
                 numEstudantesVivos++;
             }
         }
-        /*System.out.println("Número de impostores: " + numImp);
-        System.out.println("Número de estudantes vivos: " + numEstudantesVivos);*/
+        System.out.println("Número de impostores: " + numImp);
+        System.out.println("Número de estudantes vivos: " + numEstudantesVivos);
 
         return numEstudantesVivos <= numImp; // Se retirna true a partida remata
     }
@@ -216,7 +218,7 @@ public class Xogo {
             }
 
             // Comprobación e execución de asasinatos por parte dos impostores
-            int asesinatos=0;
+
             List<Xogador> xogadoresList = new ArrayList<>(xogadores);
 
             Iterator<Xogador> iterator = xogadoresList.iterator();
@@ -228,19 +230,18 @@ public class Xogo {
                     if (victima instanceof Estudante && victima.isVivo()) {
                         ((Impostor) xogador).update(victima);
                         if (!victima.isVivo()) {
-                            asesinatos++;
                             xogadores.remove(victima);
                             xogadores.add(victima); // Actualizar a víctima na lista
                         }
                     }
                 }
             }
-            // Visualiza o resultado dos asasinatos nesta rolda
             System.out.println();
             System.out.println("*************************************************");
-            System.out.println("Houbo " + asesinatos + " asesinato(s) nesta ronda.");
+            System.out.println("Houbo " + impostor.getEliminados() + " asesinato(s) nesta ronda.");
             System.out.println("*************************************************");
             System.out.println();
+
 
             // Comproba se a partida debe rematar
             if(finPartida()){
