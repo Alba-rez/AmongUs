@@ -159,8 +159,8 @@ public class Xogo {
                 numEstudantesVivos++;
             }
         }
-        System.out.println("Número de impostores: " + numImp);
-        System.out.println("Número de estudantes vivos: " + numEstudantesVivos);
+        /*System.out.println("Número de impostores: " + numImp);
+        System.out.println("Número de estudantes vivos: " + numEstudantesVivos);*/
 
         return numEstudantesVivos <= numImp; // Se retirna true a partida remata
     }
